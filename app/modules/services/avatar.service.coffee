@@ -88,10 +88,11 @@ class AvatarService
             root = location.protocol + '//' + location.host
             logo = @.getDefault(gravatar)
 
-            logoUrl = encodeURIComponent(root + logo.src)
-
+           # logoUrl = encodeURIComponent(root + logo.src)
+            logoUrl  =  (root+logo.src)
             return {
-                url: 'https://www.gravatar.com/avatar/' + gravatar + "?s=200&d=" + logoUrl,
+               # url: 'https://www.gravatar.com/avatar/' + gravatar + "?s=200&d=" + logoUrl,
+                url: logoUrl,
                 bg: logo.color,
                 username: username
             }
