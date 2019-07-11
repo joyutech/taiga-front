@@ -48,6 +48,9 @@
         title="{{ 'COMMON.CANCEL' | translate }}"
     )
         tg-svg(svg-icon="icon-close")
+    label(style="cursor:pointer;")
+        tg-svg(svg-icon="icon-upload")
+        input(type="file" tg-file-change="upload(files)" style="display:none;")
 
 tg-wysiwyg-code-lightbox.lightbox.lightbox-generic-form(
   languages="codeLans"

@@ -361,7 +361,7 @@ gulp.task("main-css", function() {
 
 var compileThemes = function (cb) {
     return runSequence("clear",
-                       "scss-lint",
+                    //    "scss-lint",
                        "sass-compile",
                        "css-lint-app",
                        ["app-css", "vendor-css"],
@@ -382,7 +382,8 @@ gulp.task("compile-themes", function(cb) {
 });
 
 gulp.task("styles", function(cb) {
-    return runSequence("scss-lint",
+    return runSequence(
+        // "scss-lint",
                        "sass-compile",
                        ["app-css", "vendor-css"],
                        "main-css",

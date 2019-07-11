@@ -1649,6 +1649,7 @@
         "REMOVE": "移除此维基页",
         "DELETE_LIGHTBOX_TITLE": "删除维基页",
         "DELETE_LINK_TITLE": "删除维基链接",
+        "RENAME_LINK_TITLE": "重命名链接",
         "NAVIGATION": {
             "HOME": "主页",
             "SECTION_NAME": "连结",

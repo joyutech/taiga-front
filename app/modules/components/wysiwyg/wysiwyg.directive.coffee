@@ -273,6 +273,20 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
 
             return
 
+        $scope.upload = (files) ->
+            $scope.mode = 'markdown'
+            mediumInstance.trigger('editableBlur', {}, editorMedium[0])
+            if window.FileReader
+                file = files[0]
+                reader = new FileReader
+                reader.onload = () ->
+                   $scope.markdown = @result
+                   mediumInstance.trigger('editableBlur', {}, editorMedium[0])
+
+                reader.readAsText(file)
+            else
+                alert('浏览器不支持读取本地文件')
+
         $scope.cancel = (e) ->
             e.preventDefault() if e
 
