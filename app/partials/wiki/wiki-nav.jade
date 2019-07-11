@@ -22,6 +22,8 @@ ul.sortable.wiki-link-container
         a.link-title(title!="{{ link.title }}", href!="{{ link.url }}") {{ link.title }}
 
         <% if (deleteWikiLinkPermission) { %>
+        a.js-rename-link.remove-wiki-page(title!="{{'WIKI.RENAME_LINK_TITLE' | translate}}")
+            tg-svg(svg-icon="icon-edit")
         a.js-delete-link.remove-wiki-page(title!="{{'WIKI.DELETE_LINK_TITLE' | translate}}")
             tg-svg(svg-icon="icon-trash")
         <% } %>

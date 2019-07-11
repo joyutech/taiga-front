@@ -116,6 +116,26 @@ WikiNavDirective = ($tgrepo, $log, $location, $confirm, $analytics, $loading, $t
                         askResponse.finish(false)
                         $confirm.notify("error")
 
+            $el.on "click", ".js-rename-link", (event) ->
+                event.preventDefault()
+                event.stopPropagation()
+                target = angular.element(event.currentTarget)
+                linkModel = $scope.wikiLinks[target.parents('.wiki-link').data('id')]
+                linkId = linkModel.id
+                linkTitle = linkModel.title
+
+                newTitle = prompt('输入新名字', linkTitle)
+
+                if newTitle && newTitle.trim() && newTitle != linkTitle
+                    linkModel.title = newTitle
+                    promise = $tgrepo.save(linkModel)
+                    promise.then ->
+                        promise = $ctrl.loadWikiLinks()
+                        promise.then ->
+                            render($scope.wikiLinks)
+                    promise.then null, ->
+                        $confirm.notify("error")
+
             $el.on "keyup", ".new input", (event) ->
                 event.preventDefault()
                 if event.keyCode == 13
