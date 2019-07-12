@@ -44,6 +44,33 @@
 
 中文文档比较残缺：https://www.angularjs.net.cn/
 
+### 简单的说明依赖注入
+
+```coffee
+# 来自app\coffee\modules\resources\wiki.coffee
+resourceProvider = ($repo, $http, $urls) ->
+# 中间省略
+module.factory("$tgWikiResourcesProvider", ["$tgRepo", "$tgHttp", "$tgUrls", resourceProvider])
+```
+
+看上面这两行，resourceProvider的三个参数($repo, $http, $urls)，其实就是下面那行的这三个服务(可注入的不只是服务)的别称(`"$tgRepo", "$tgHttp", "$tgUrls"`)。而(`"$tgRepo", "$tgHttp", "$tgUrls"`)这三个服务，是在其他地方注册的。至于在哪个文件里，只能通过编辑器搜索这三个名字来找到了。下面列一下这个三个服务所在文件。
+
+* $tgRepo：app\coffee\modules\base\repository.coffee
+* $tgHttp：app\coffee\modules\base\http.coffee
+* $tgUrls：app\coffee\modules\base\urls.coffee
+
+通过class定义的service，也是一个道理，是通过@.$inject来定义依赖注入。下面这个constructor里的`@config`就是`$tgConfig`
+
+```coffee
+# 来自app\coffee\modules\base\urls.coffee
+class UrlsService extends taiga.Service
+    @.$inject = ["$tgConfig"]
+
+    constructor: (@config) ->
+        @.urls = {}
+        @.mainUrl = @config.get("api")
+```
+
 ### 举wiki这个页面做例子
 这里目录结构很混乱，先把涉及的目录和文件列出来。
 
@@ -109,3 +136,85 @@ $scope.upload = (files) ->
 ```
 
 上面的这个wysiwyg.directive.coffee，就定义了一个tgWysiwyg组件，这个组件在`app\partials\wiki\wiki.jade`里使用了，标签名是`tg-wiki-wysiwyg`。wysiwyg-toolbar.jade是这个组件的模板，在wysiwyg.directive.coffee里可以看到`templateUrl: "common/components/wysiwyg-toolbar.html"`，这个就是定义使用的模板的地方(最后是编译成html并且缓存在templates.js里读取的)。
+
+### 访问后端API
+api可以查看：http://taigaio.github.io/taiga-doc/dist/api.html
+
+taiga把http访问后端的逻辑都封装了。不过看起来比较绕。下面对涉及到数据操作的文件进行介绍。先列出具体路径，后提及的时候只用文件名。
+
+* app\coffee\modules\base\model.coffee：封装数据。利用getter和setter进行一些特殊处理。比如修改了一个属性的值，会标记这个model的哪个属性被修改过。
+* app\coffee\modules\base\repository.coffee：和后端通讯。获取数据后，会在这里封装成对应的model。要修改数据，就把model传到这个模块的方法里，这里进行处理后对后端数据进行修改。
+* app\coffee\modules\resources.coffee：这里定义了各个model对应的url。这里的url前面的key，就是各个model所使用的名字。
+* app\coffee\modules\resources\wiki.coffee：这是一个具体的resource，会在resources.coffee里注册到总的resource里(也就是`$tgResources`)。
+* app\coffee\modules\wiki\main.coffee：wiki页的代码。下面作为例子。
+* app\coffee\modules\wiki\nav.coffee：wiki页的代码。下面作为例子。
+
+例子如下：
+
+wiki.coffee这个文件是一个service的工厂函数，注意它的返回，是一个函数，它把service用wiki这个key添加到instance里了，而这里的instance，其实就是下面提及的`$tgResources`
+
+```coffee
+# 来自 wiki.coffee
+return (instance) ->
+    instance.wiki = service
+```
+
+它是在resources.coffee的一下这段代码里注册到`$tgResources`的
+
+```coffee
+# 来自resources.coffee
+initResources = ($log, $rs) ->
+    $log.debug "Initialize resources"
+    providers = _.toArray(arguments).slice(2)
+
+    for provider in providers
+        provider($rs)
+```
+
+注册好后，下面看看是怎么用wiki.coffee里的这个resource的。看main.coffee。里面的`@rs`，就是`$tgResources`的别名(依赖注入时起了别名，函数内部用的就是`@rs`)。这里使用的`getBySlug`函数，就是wiki.coffee里定义的那个。
+
+```coffee
+# 来自main.coffee
+loadWiki: =>
+    promise = @rs.wiki.getBySlug(@scope.projectId, @params.slug)
+```
+
+回头看看wiki.coffee的细节。下面的`$repo`就是repository.coffee定义的`$tgRepo`。`queryOne`这个方法查询数据后，封装成一个model返回(`queryOne`返回的是一个Promise，这里忽略这个细节)。然后页面代码里实际操作的，是这个封装后的model。
+
+```coffee
+# 来自 wiki.coffee
+service.getBySlug = (projectId, slug) ->
+    return $repo.queryOne("wiki", "by_slug?project=#{projectId}&slug=#{slug}")
+```
+
+另外，wiki.coffee里只定义了获取数据有关的方法。所以下面说明它是怎么修改后端数据的。事实上，它就是通过直接调用repository.coffee里的方法来和修改数据的。下面这段，就是直接调用remove这个方法来进行删除，注意这里是传入了一个model的。
+
+```coffee
+# 来自main.coffee
+@repo.remove(@scope.wiki).then onSuccess, onError
+```
+
+举一个修改的例子。这个是修改wiki-link的标题。细节看下面注释了注意的两行。另外可以看看repository.coffee里save的逻辑。
+
+```coffee
+# 来自nav.coffee
+$el.on "click", ".js-rename-link", (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+    target = angular.element(event.currentTarget)
+    linkModel = $scope.wikiLinks[target.parents('.wiki-link').data('id')]
+    linkId = linkModel.id
+    linkTitle = linkModel.title
+
+    newTitle = prompt('输入新名字', linkTitle)
+
+    if newTitle && newTitle.trim() && newTitle != linkTitle
+        linkModel.title = newTitle # 注意，这里修改了title后，因为它是个setter，model会记录这个title被修改过
+        promise = $tgrepo.save(linkModel) # 注意，然后这里直接调save，细节的逻辑都是在save这个方法里了，它会把修改的title通过patch(默认)发到后端
+        promise.then ->
+            promise = $ctrl.loadWikiLinks()
+            promise.then ->
+                render($scope.wikiLinks)
+        promise.then null, ->
+            $confirm.notify("error")
+```
