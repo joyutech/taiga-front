@@ -7,7 +7,7 @@ window.taigaConfig = {
     "eventsMaxMissedHeartbeats": 5,
     "eventsHeartbeatIntervalTime": 60000,
     "debug": true,
-    "defaultLanguage": "en",
+    "defaultLanguage": "zh-hans",
     "themes": ["taiga", "material-design", "high-contrast"],
     "defaultTheme": "taiga",
     "publicRegisterEnabled": true,

@@ -396,7 +396,7 @@
         "EMPTY_PROJECT_LIST": "你尚无任何项目",
         "WORKING_ON_SECTION": "进行中",
         "WATCHING_SECTION": "关注中",
-        "DASHBOARD": "项目仪表盘",
+        "DASHBOARD": "项目面板",
         "SET_HIDDEN": "设置隐藏",
         "SET_VISIBLE": "设置可见",
         "NO_HIDDEN_ITEMS": "你没有隐藏项目",
@@ -905,7 +905,7 @@
             "CHANGE_PASSWORD_TITLE": "更换密码",
             "CHANGE_PASSWORD": "更换密码",
             "DASHBOARD_TITLE": "控制台",
-            "DISCOVER_TITLE": "发现流行项目",
+            "DISCOVER_TITLE": "发现更多项目",
             "DISCOVER": "发现"
         },
         "LIKE_BUTTON": {
