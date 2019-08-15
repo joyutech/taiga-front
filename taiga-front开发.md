@@ -17,19 +17,44 @@
 ## 现网部署方法
 
 ### 首次部署步骤：
-1. 参考文档(http://taigaio.github.io/taiga-doc/dist/setup-production.html)。
-2. 进入现网服务器的taiga目录：/home/taiga，执行 git clone https://github.com/taigaio/taiga-front-dist.git taiga-front-dist 命令，把taiga的部署工程拷贝下来。
-3. 执行 cd taiga-front-dist 命令进入目录，然后执行 yarn 命令，安装脚本运行所需要的node_module依赖库。
-4. 编辑 dist.js 文件，首先把 repo 改为 https://github.com/joyutech/taiga-front ，这样脚本编译的工程就改为我们自己的工程库了。然后，把 compile taiga 那一步的 npm install 改为 yarn，因为 npm install 安装容易出错。最后，把后面几步git的操作注释掉，不需要。保存。
-5. 执行 cp dist/conf.example.json conf.json 命令，编辑 conf.json 文件，修改相关配置。
-6. 执行 cp conf.json dist/conf.json 命令。
-7. 最后执行 ./generate.sh 脚本，第一次执行因为要clone工程和安装node_module依赖库，所以会很慢。
+
+    参考文档(http://taigaio.github.io/taiga-doc/dist/setup-production.html)
+
+1. 进入现网服务器的taiga目录，把taiga的部署工程拷贝下来：
+```javascript
+# cd /home/taiga
+# git clone https://github.com/taigaio/taiga-front-dist.git taiga-front-dist
+# cd taiga-front-dist
+// 切换到stable分支
+# git checkout stable
+// 安装脚本运行所需要的node_module依赖库
+# yarn
+```
+
+2. 编辑 dist.js 文件，修改如下：
+```javascript
+// 把脚本编译的工程指向我们自己的工程代码库
+-var repo = 'https://github.com/taigaio/taiga-front';
++var repo = 'https://github.com/joyutech/taiga-front';
+
+// npm install 安装容易出错，改为yarn
+-return exec('cd ' + local + ' && npm install && gulp deploy');
++return exec('cd ' + local + ' && yarn && gulp deploy');
+
+// 最后，还要把后面几步的git操作注释掉，不需要。
+```
+
+3. 执行 ./generate.sh 脚本编译工程，第一次执行因为要clone工程和安装node_module依赖库，所以会很慢。
+
+4. 生成conf.json配置文件，并修改成自己需要的配置。如果没有conf.json，则会走默认配置。
+```
+cp dist/conf.example.json dist/conf.json
+```
 
 ### 后续升级步骤：
-1. 在master分支修改并提交代码。
-2. 合并到stable分支。
-3. 登陆现网服务器，执行 cp conf.json dist/conf.json 命令。
-4. 最后执行 ./generate.sh 脚本，完成升级。
+1. taiga-front工程，在master分支修改并提交代码。再合并到stable分支。（记得push到github）
+2. 登陆现网服务器，执行 ./generate.sh 脚本编译工程。
+3. 执行 cp dist/conf.example.json dist/conf.json 命令。
 
 ## 代码结构说明
 
