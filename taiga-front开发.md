@@ -14,6 +14,23 @@
 6. 有个css加载的问题，下载这个文件(http://ftp.joyutech.com:88/v-1557327234628/styles/theme-taiga.css)，丢到gulp生成的dist/v-xxxxxxx/styles目录下。这个是gulp-scss-lint的问题，在gulpfile.js里把scss-lint的任务注释掉就好了。
 7. `gulp deploy`时，模块gulp-imagemin有问题(node10下)，把它升级到6.0.0可以解决。
 
+## 现网部署方法
+
+### 首次部署步骤：
+1. 参考文档(http://taigaio.github.io/taiga-doc/dist/setup-production.html)。
+2. 进入现网服务器的taiga目录：/home/taiga，执行 git clone https://github.com/taigaio/taiga-front-dist.git taiga-front-dist 命令，把taiga的部署工程拷贝下来。
+3. 执行 cd taiga-front-dist 命令进入目录，然后执行 yarn 命令，安装脚本运行所需要的node_module依赖库。
+4. 编辑 dist.js 文件，首先把 repo 改为 https://github.com/joyutech/taiga-front ，这样脚本编译的工程就改为我们自己的工程库了。然后，把 compile taiga 那一步的 npm install 改为 yarn，因为 npm install 安装容易出错。最后，把后面几步git的操作注释掉，不需要。保存。
+5. 执行 cp dist/conf.example.json conf.json 命令，编辑 conf.json 文件，修改相关配置。
+6. 执行 cp conf.json dist/conf.json 命令。
+7. 最后执行 ./generate.sh 脚本，第一次执行因为要clone工程和安装node_module依赖库，所以会很慢。
+
+### 后续升级步骤：
+1. 在master分支修改并提交代码。
+2. 合并到stable分支。
+3. 登陆现网服务器，执行 cp conf.json dist/conf.json 命令。
+4. 最后执行 ./generate.sh 脚本，完成升级。
+
 ## 代码结构说明
 
 ### dist目录
