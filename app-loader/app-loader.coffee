@@ -2,7 +2,7 @@ window._version = "___VERSION___"
 
 window.taigaConfig = {
     "api": "http://222.44.104.36:88/api/v1/",
-    "eventsUrl": "ws://222.44.104.36:88/events",
+    "eventsUrl": null,
     "tribeHost": null,
     "eventsMaxMissedHeartbeats": 5,
     "eventsHeartbeatIntervalTime": 60000,
