@@ -2,7 +2,7 @@ window._version = "___VERSION___"
 
 window.taigaConfig = {
     "api": "http://222.44.104.36:88/api/v1/",
-    "eventsUrl": null,
+    "eventsUrl": "ws://222.44.104.36:88/events",
     "tribeHost": null,
     "eventsMaxMissedHeartbeats": 5,
     "eventsHeartbeatIntervalTime": 60000,
@@ -10,7 +10,7 @@ window.taigaConfig = {
     "defaultLanguage": "zh-hans",
     "themes": ["taiga", "material-design", "high-contrast"],
     "defaultTheme": "taiga",
-    "publicRegisterEnabled": true,
+    "publicRegisterEnabled": false,
     "feedbackEnabled": true,
     "supportUrl": null,
     "privacyPolicyUrl": null,
