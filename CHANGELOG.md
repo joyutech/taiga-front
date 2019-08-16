@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+## 4.2.13 (2019-08-06)
+
+- Minor fixes
+
+## 4.2.12 (2019-08-06)
+
+- Add Taiga Fresh theme.
+- Minor fixes.
+
+## 4.2.11 (2019-07-24)
+
+- Progressive Kanban render.
+- Minor fixes.
+
+## 4.2.10 (2019-07-11)
+
+- Close loader before kanban/backlog filter request.
+
+## 4.2.8 (2019-07-03)
+
+- Fix multiple assign US button
+
 ## 4.2.7 (2019-06-24)
 
 - Assign roles as watchers

@@ -46,10 +46,14 @@ $dropdown-width: 350px;
         .active {
             background: rgba($white, .95);
             color: $secondary-dark;
+
+            svg {
+                fill: $secondary-dark;
+            }
         }
         svg {
             @include svg-size(1.2rem);
-            fill: rgba($primary-dark, .8);
+            fill: rgba($white, .3);
             transition: all .2s linear;
         }
     }

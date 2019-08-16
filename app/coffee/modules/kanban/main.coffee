@@ -56,7 +56,9 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
         "$tgStorage",
         "tgFilterRemoteStorageService",
         "tgProjectService",
-        "tgLightboxFactory"
+        "tgLightboxFactory",
+        "tgLoader",
+        "$timeout"
     ]
 
     storeCustomFiltersName: 'kanban-custom-filters'
@@ -65,7 +67,7 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
     constructor: (@scope, @rootscope, @repo, @confirm, @rs, @rs2, @params, @q, @location,
                   @appMetaService, @navUrls, @events, @analytics, @translate, @errorHandlingService,
                   @model, @kanbanUserstoriesService, @storage, @filterRemoteStorageService,
-                  @projectService, @lightboxFactory) ->
+                  @projectService, @lightboxFactory, @tgLoader, @timeout) ->
         bindMethods(@)
         @kanbanUserstoriesService.reset()
         @.openFilter = false
@@ -250,6 +252,37 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
         return @rs.projects.tagsColors(@scope.projectId).then (tags_colors) =>
             @scope.project.tags_colors = tags_colors._attrs
 
+    renderBatch: () ->
+        @.rendered = _.concat(@.rendered, _.take(@.queue, @.batchSize))
+        @.queue = _.drop(@.queue, @.batchSize)
+        @kanbanUserstoriesService.set(@.rendered)
+
+        if @.queue.length > 0
+            @timeout(@.renderBatch)
+        else
+            scopeDefer @scope, =>
+                # The broadcast must be executed when the DOM has been fully reloaded.
+                # We can't assure when this exactly happens so we need a defer
+                @rootscope.$broadcast("kanban:userstories:loaded", @.rendered)
+                @scope.$broadcast("userstories:loaded", @.rendered)
+
+    renderUserStories: (userstories) =>
+        userstories = _.sortBy(userstories, 'kanban_order')
+        userstoriesMap = _.groupBy(userstories, 'status')
+        @.rendered = []
+        @.queue = []
+        @.batchSize = 0
+
+        while (@.queue.length < userstories.length)
+            _.each @scope.project.us_statuses, (x) =>
+                if (userstoriesMap[x.id]?.length > 0)
+                    @.queue = _.concat(@.queue, _.take(userstoriesMap[x.id], 3))
+                    userstoriesMap[x.id] = _.drop(userstoriesMap[x.id], 3)
+            if !@.batchSize
+                @.batchSize = @.queue.length
+
+        @timeout(@.renderBatch)
+
     loadUserstories: () ->
         params = {
             status__is_archived: false
@@ -263,15 +296,8 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
 
         promise = @rs.userstories.listAll(@scope.projectId, params).then (userstories) =>
             @kanbanUserstoriesService.init(@scope.project, @scope.usersById)
-            @kanbanUserstoriesService.set(userstories)
-
-            @rootscope.$broadcast("kanban:userstories:loaded", userstories)
-
-            # The broadcast must be executed when the DOM has been fully reloaded.
-            # We can't assure when this exactly happens so we need a defer
-            scopeDefer @scope, =>
-                @scope.$broadcast("userstories:loaded", userstories)
-
+            @tgLoader.pageLoaded()
+            @.renderUserStories(userstories)
             return userstories
 
         promise.then( => @scope.$broadcast("redraw:wip"))
@@ -522,7 +548,7 @@ KanbanSquishColumnDirective = (rs, projectService) ->
             $el.find('.kanban-table-inner').css("width", totalWidth)
 
         unwatch = $scope.$watch 'usByStatus', (usByStatus) ->
-            if usByStatus.size
+            if usByStatus?.size
                 $scope.folds = rs.kanban.getStatusColumnModes(projectService.project.get('id'))
                 updateTableWidth()
 
