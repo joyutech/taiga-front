@@ -19,7 +19,7 @@ ul.sortable.wiki-link-container
         <% if (addWikiLinkPermission) { %>
         tg-svg.dragger(svg-icon="icon-drag")
         <% } %>
-        a.link-title(title!="{{ link.title }}", href!="{{ link.url }}") {{ link.title }}
+        a.link-title(href!="{{ link.url }}") {{ link.title }}
 
         <% if (deleteWikiLinkPermission) { %>
         a.js-rename-link.remove-wiki-page(title!="{{'WIKI.RENAME_LINK_TITLE' | translate}}")
