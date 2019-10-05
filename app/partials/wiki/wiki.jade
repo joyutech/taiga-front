@@ -16,13 +16,13 @@ div.wrapper(
                 span.green(translate="PROJECT.SECTION.WIKI")
                 span.project-name(tg-bo-bind="project.name")
 
-        tg-wiki-wysiwyg(model="wiki")
-
         .summary.wiki-summary(
             tg-wiki-summary
             ng-model="wiki"
             ng-if="wiki.id"
         )
+
+        tg-wiki-wysiwyg(model="wiki")
 
         tg-attachments-full(
             ng-if="wiki.id"
