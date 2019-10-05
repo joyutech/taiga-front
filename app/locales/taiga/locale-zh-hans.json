@@ -1646,7 +1646,7 @@
     "WIKI": {
         "PAGE_TITLE": "{{wikiPageName}} - 维基 - {{projectName}}",
         "PAGE_DESCRIPTION": "最近编辑{{lastModifiedDate}} (总共编辑了{{totalEditions}}次)，内容：{{ wikiPageContent }}",
-        "DATETIME": "DD MMM YYYY HH:mm",
+        "DATETIME": "YYYY-MM-DD HH:mm",
         "REMOVE": "移除此维基页",
         "DELETE_LIGHTBOX_TITLE": "删除维基页",
         "DELETE_LINK_TITLE": "删除维基链接",
