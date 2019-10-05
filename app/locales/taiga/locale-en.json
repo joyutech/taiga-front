@@ -1647,6 +1647,7 @@
         "PAGE_TITLE": "{{wikiPageName}} - Wiki - {{projectName}}",
         "PAGE_DESCRIPTION": "Last edition on {{lastModifiedDate}} ({{totalEditions}} editions in total) Content: {{ wikiPageContent }}",
         "DATETIME": "DD MMM YYYY HH:mm",
+        "EDIT": "Edit this wiki page",
         "REMOVE": "Remove this wiki page",
         "DELETE_LIGHTBOX_TITLE": "Delete Wiki Page",
         "DELETE_LINK_TITLE": "Delete Wiki link",

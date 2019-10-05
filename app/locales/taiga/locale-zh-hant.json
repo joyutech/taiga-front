@@ -1647,6 +1647,7 @@
         "PAGE_TITLE": "{{wikiPageName}} - 維基 - {{projectName}}",
         "PAGE_DESCRIPTION": "上回編輯{{lastModifiedDate}} ({{totalEditions}} editions in total) 內容: {{ wikiPageContent }}",
         "DATETIME": "DD MMM YYYY HH:mm",
+        "EDIT": "編輯此維基頁　",
         "REMOVE": "移除此維基頁　",
         "DELETE_LIGHTBOX_TITLE": "刪除維基頁",
         "DELETE_LINK_TITLE": "Delete Wiki link",

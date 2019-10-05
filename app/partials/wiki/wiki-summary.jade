@@ -17,6 +17,15 @@
     span.number <%- totalEditions %>
     span.description(translate="WIKI.SUMMARY.TIMES_EDITED")
 
+tg-svg.edit(
+    tg-check-permission="modify_wiki_page"
+    title="{{'WIKI.EDIT' | translate}}"
+    ng-click="ctrl.edit()"
+    svg-icon="icon-edit"
+    ng-if="wiki.id"
+
+)
+
 tg-svg.remove(
     tg-check-permission="delete_wiki_page"
     title="{{'WIKI.REMOVE' | translate}}"
