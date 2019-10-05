@@ -194,6 +194,7 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
         codeBlockSelected = null
 
         isEditOnly = !!$attrs.$attr.editonly
+        isWikiEditor = !!$attrs.$attr.wikiEditor
         notPersist = !!$attrs.$attr.notPersist
 
         $scope.required = !!$attrs.$attr.required
@@ -208,6 +209,7 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
 
         setEditMode = (editMode) ->
             $scope.editMode = editMode
+            editorMedium[0].setAttribute('contenteditable', editMode)
 
         setHtmlMedium = (markdown) ->
             html = wysiwygService.getHTML(markdown)
@@ -532,11 +534,11 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
             if e.target.href
                 e.preventDefault()
                 e.stopPropagation()
-            else
+            else if !isWikiEditor
                 $scope.$applyAsync () ->
                     if !$scope.editMode
                         setEditMode(true)
-                        refreshCodeBlocks(mediumInstance)                   
+                        refreshCodeBlocks(mediumInstance)
 
         $(editorMedium[0]).on 'dblclick', 'pre', (e) ->
             $scope.$applyAsync () ->
@@ -572,6 +574,13 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
                     create(content, $scope.editMode)
 
                 unwatch()
+
+        $scope.$on "wiki-edit", () ->
+            if isWikiEditor
+                $scope.$applyAsync () ->
+                    if !$scope.editMode
+                        setEditMode(true)
+                        refreshCodeBlocks(mediumInstance)
 
         $scope.$on "$destroy", () ->
             if mediumInstance

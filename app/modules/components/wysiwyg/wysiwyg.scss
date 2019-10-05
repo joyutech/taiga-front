@@ -181,6 +181,9 @@ tg-wysiwyg {
     div[contenteditable="true"] *:last-child {
         margin-bottom: 0;
     }
+    div[contenteditable="true"]:focus {
+        outline: none;
+    }
     pre {
         cursor: pointer;
     }
@@ -231,7 +234,7 @@ tg-wysiwyg {
         }
     }
     .read-mode {
-        cursor: pointer;
+        cursor: text;
     }
     .medium {
         border: 1px solid transparent;

@@ -9,11 +9,15 @@
         span.description(translate="WIKI.SUMMARY.LAST_MODIFICATION")
         span.username <%- user.name %>
 
-.wiki-last-modified
+.wiki-last-modified(
+    ng-if="wiki.id"
+)
     span.number <%- lastModifiedDate %>
     span.description(translate="WIKI.SUMMARY.LAST_EDIT")
 
-.wiki-times-edited
+.wiki-times-edited(
+    ng-if="wiki.id"
+)
     span.number <%- totalEditions %>
     span.description(translate="WIKI.SUMMARY.TIMES_EDITED")
 
@@ -22,7 +26,6 @@ tg-svg.edit(
     title="{{'WIKI.EDIT' | translate}}"
     ng-click="ctrl.edit()"
     svg-icon="icon-edit"
-    ng-if="wiki.id"
 
 )
 

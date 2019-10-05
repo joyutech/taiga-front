@@ -136,6 +136,9 @@ class WikiDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
           (@scope.project.my_permissions.indexOf("view_wiki_links") != -1 && @scope.wikiLinks.length)
             @scope.linksVisible = true
 
+    edit: ->
+        @rootscope.$broadcast("wiki-edit")
+
     delete: ->
         title = @translate.instant("WIKI.DELETE_LIGHTBOX_TITLE")
         message = @scope.wikiSlug
@@ -263,6 +266,7 @@ $qqueue, $repo, $analytics, activityService) ->
         template: """
             <div>
                 <tg-wysiwyg
+                    wiki-editor
                     ng-if="editableDescription"
                     version='version'
                     storage-key='storageKey'
