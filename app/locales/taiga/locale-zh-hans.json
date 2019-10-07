@@ -402,7 +402,8 @@
         "SET_VISIBLE": "设置可见",
         "NO_HIDDEN_ITEMS": "你没有隐藏项目",
         "HIDE_HIDDEN": "不显示隐藏的对象",
-        "SHOW_HIDDEN": "显示隐藏对象"
+        "SHOW_HIDDEN": "显示隐藏对象",
+        "INPUT_PLACEHOLDER": "项目搜索..."
     },
     "EPICS": {
         "TITLE": "史诗",

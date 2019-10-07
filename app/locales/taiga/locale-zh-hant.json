@@ -402,7 +402,8 @@
         "SET_VISIBLE": "Set as visible",
         "NO_HIDDEN_ITEMS": "You have no hidden items",
         "HIDE_HIDDEN": "Do not show hidden objects",
-        "SHOW_HIDDEN": "Show hidden objects"
+        "SHOW_HIDDEN": "Show hidden objects",
+        "INPUT_PLACEHOLDER": "項目搜索..."
     },
     "EPICS": {
         "TITLE": "EPICS",
