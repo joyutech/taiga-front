@@ -21,7 +21,19 @@ HomeProjectListDirective = (currentUserService) ->
     link = (scope, el, attrs, ctrl) ->
         scope.vm = {}
 
-        taiga.defineImmutableProperty(scope.vm, "projects", () -> currentUserService.projects.get("recents"))
+        scope.vm.q = ""
+
+        scope.vm.changeQ = () ->
+            if scope.vm.q
+                allProjects = currentUserService.projects.get("all")
+                scope.vm.filterProjects = allProjects.filter((project) -> project.toJS().name.indexOf(scope.vm.q) != -1)
+
+        taiga.defineImmutableProperty(scope.vm, "projects", () -> 
+            if scope.vm.q
+                scope.vm.filterProjects
+            else
+                currentUserService.projects.get("recents")
+        )
 
     directive = {
         templateUrl: "home/projects/home-project-list.html"

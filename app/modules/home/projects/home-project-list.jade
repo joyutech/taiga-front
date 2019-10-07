@@ -1,16 +1,16 @@
-section.home-project-list(ng-if="vm.projects.size")
+.home-searchbox
+    input(
+        type="text"
+        placeholder="{{ 'HOME.INPUT_PLACEHOLDER' | translate }}"
+        ng-model="vm.q"
+        ng-model-options="{ debounce: 200 }"
+        ng-change="vm.changeQ()"
+    )
+    tg-svg.search-action(
+        svg-icon="icon-search"
+    )
 
-    .home-searchbox
-        input(
-            type="text"
-            placeholder="{{ 'HOME.INPUT_PLACEHOLDER' | translate }}"
-            ng-model="search"
-            ng-model-options="{ debounce: 200 }"
-            ng-change="vm.changeQ()"
-        )
-        tg-svg.search-action(
-            svg-icon="icon-search"
-        )
+section.home-project-list(ng-if="vm.projects.size")
 
     .home-project(
         tg-bind-scope
