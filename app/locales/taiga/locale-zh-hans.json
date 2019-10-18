@@ -1645,7 +1645,7 @@
         }
     },
     "WIKI": {
-        "PAGE_TITLE": "{{wikiPageName}} - 维基 - {{projectName}}",
+        "PAGE_TITLE": "维基 - {{projectName}}",
         "PAGE_DESCRIPTION": "最近编辑{{lastModifiedDate}} (总共编辑了{{totalEditions}}次)，内容：{{ wikiPageContent }}",
         "DATETIME": "YYYY-MM-DD HH:mm",
         "EDIT": "编辑此维基页",

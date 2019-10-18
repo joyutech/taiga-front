@@ -1645,7 +1645,7 @@
         }
     },
     "WIKI": {
-        "PAGE_TITLE": "{{wikiPageName}} - Wiki - {{projectName}}",
+        "PAGE_TITLE": "Wiki - {{projectName}}",
         "PAGE_DESCRIPTION": "Last edition on {{lastModifiedDate}} ({{totalEditions}} editions in total) Content: {{ wikiPageContent }}",
         "DATETIME": "DD MMM YYYY HH:mm",
         "EDIT": "Edit this wiki page",
