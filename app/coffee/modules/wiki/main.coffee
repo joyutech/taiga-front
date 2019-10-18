@@ -123,6 +123,10 @@ class WikiDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
                 })
 
             selectedWikiLink = _.find(wikiLinks, {href: @scope.wikiSlug})
+            if selectedWikiLink is undefined
+                @scope.selectedWikiTitle = @translate.instant("WIKI.NAVIGATION.HOME")
+            else
+                @scope.selectedWikiTitle = selectedWikiLink.title
 
     loadInitialData: ->
         project = @.loadProject()
