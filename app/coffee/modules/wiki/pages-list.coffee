@@ -38,12 +38,13 @@ class WikiPagesListController extends mixOf(taiga.Controller, taiga.PageMixin)
         "$routeParams",
         "$q",
         "$tgNavUrls",
+        "$translate",
         "tgErrorHandlingService",
         "tgProjectService"
     ]
 
     constructor: (@scope, @rootscope, @repo, @model, @confirm, @rs, @params, @q,
-                  @navUrls, @errorHandlingService, @projectService) ->
+                  @navUrls, @translate, @errorHandlingService, @projectService) ->
         @scope.projectSlug = @params.pslug
         @scope.wikiSlug = @params.slug
         @scope.sectionName = "Wiki"
@@ -69,6 +70,14 @@ class WikiPagesListController extends mixOf(taiga.Controller, taiga.PageMixin)
     loadWikiPages: ->
         promise = @rs.wiki.list(@scope.projectId).then (wikipages) =>
             @scope.wikipages = wikipages
+            for page in wikipages
+                for link in @scope.wikiLinks
+                    if page.slug == link.href
+                        page.title = link.title
+                    else if page.slug == "home"
+                        page.title = @translate.instant("WIKI.NAVIGATION.HOME")
+                if !page.title
+                    page.title = "(Removed) " + page.slug
 
     loadWikiLinks: ->
         return @rs.wiki.listLinks(@scope.projectId).then (wikiLinks) =>
