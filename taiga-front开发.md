@@ -9,7 +9,7 @@
 1. 装好sass(https://sass-lang.com/install)。在windows下先装chocolatey。这个步骤只要按照教程基本没问题。
 2. 全局装gulp
 3. 项目目录下安装其他依赖。这里主要是node-sass和gulp-sass的问题，要根据node版本来选择。node(v10.11.0)测试把node-sass改成(4.12.0)和gulp-sass改成(4.0.2)可以通过安装成功。
-4. 修改api地址。把conf目录下的conf.example.json里的api地址和app-loader目录下的app-loader.coffee里的api地址改成(`http://222.44.104.36:88/api/v1/`)或者(`https://api.taiga.io/api/v1`)，也就是现网和官方那个，原本是个loaclhost来的。不确定还有没有其他地方要改，打开前端看看请求是否正常就知道了。
+4. 修改api地址。把conf目录下的conf.example.json里的api地址和app-loader目录下的app-loader.coffee里的api地址改成(`http://ftp.joyutech.com:88/api/v1/`)或者(`https://api.taiga.io/api/v1`)，也就是现网和官方那个，原本是个loaclhost来的。不确定还有没有其他地方要改，打开前端看看请求是否正常就知道了。
 5. gulp，然后打开(http://localhost:9001/)
 6. 有个css加载的问题，下载这个文件(http://ftp.joyutech.com:88/v-1557327234628/styles/theme-taiga.css)，丢到gulp生成的dist/v-xxxxxxx/styles目录下。这个是gulp-scss-lint的问题，在gulpfile.js里把scss-lint的任务注释掉就好了。
 7. `gulp deploy`时，模块gulp-imagemin有问题(node10下)，把它升级到6.0.0可以解决。
