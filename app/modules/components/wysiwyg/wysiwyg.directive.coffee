@@ -541,13 +541,14 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
                         refreshCodeBlocks(mediumInstance)
 
         $(editorMedium[0]).on 'dblclick', 'pre', (e) ->
-            $scope.$applyAsync () ->
-                $scope.codeEditorVisible = true
+            if $scope.editMode
+                $scope.$applyAsync () ->
+                    $scope.codeEditorVisible = true
 
-                codeBlockSelected = e.currentTarget.querySelector('code')
+                    codeBlockSelected = e.currentTarget.querySelector('code')
 
-                $scope.currentCodeLanguage = wysiwygCodeHightlighterService.getLanguageInClassList(codeBlockSelected.classList)
-                $scope.code = codeBlockSelected.innerText
+                    $scope.currentCodeLanguage = wysiwygCodeHightlighterService.getLanguageInClassList(codeBlockSelected.classList)
+                    $scope.code = codeBlockSelected.innerText
 
         unwatch = $scope.$watch 'content', (content) ->
             if !_.isUndefined(content)

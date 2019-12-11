@@ -1,5 +1,7 @@
 .wiki {
-    max-width: 1024px;
+    padding-right: calc(100vw - 1314px);
+    height: calc(100vh - 40px);
+    overflow-y: scroll;
     .wysiwyg {
         margin-bottom: 0;
     }

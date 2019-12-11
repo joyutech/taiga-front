@@ -1,6 +1,8 @@
 .wiki-nav {
     padding: 0;
     width: 240px;
+    height: calc(100vh - 40px);
+    overflow-y: scroll;
     .title {
         @include font-size(larger);
         padding: 2rem 1rem 0 2rem;
