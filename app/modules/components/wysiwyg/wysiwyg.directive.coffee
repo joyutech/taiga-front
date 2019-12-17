@@ -80,15 +80,17 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
                 mainChildren.parentNode.removeChild(mainChildren)
 
         preList = mediumInstance.elements[0].querySelectorAll('pre')
+        isEditable = mediumInstance.elements[0].getAttribute('contenteditable') == 'true' ? true : false
 
         for pre in preList
             # prevent edit a pre
             pre.setAttribute('contenteditable', false)
 
-            pre.setAttribute('title', $translate.instant("COMMON.WYSIWYG.DB_CLICK"))
+            if isEditable
+                pre.setAttribute('title', $translate.instant("COMMON.WYSIWYG.DB_CLICK"))
 
-            # prevent text selection in firefox
-            pre.addEventListener 'mousedown', (e) -> e.preventDefault()
+                # prevent text selection in firefox
+                # pre.addEventListener 'mousedown', (e) -> e.preventDefault()
 
             if pre.nextElementSibling && pre.nextElementSibling.nodeName.toLowerCase() == 'p' && !pre.nextElementSibling.children.length
                 pre.nextElementSibling.appendChild(document.createElement('br'))

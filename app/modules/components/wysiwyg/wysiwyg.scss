@@ -184,8 +184,10 @@ tg-wysiwyg {
     div[contenteditable="true"]:focus {
         outline: none;
     }
-    pre {
-        cursor: pointer;
+    div[contenteditable="true"] {
+        pre {
+            cursor: pointer;
+        }
     }
     .outdated {
         color: $red;
