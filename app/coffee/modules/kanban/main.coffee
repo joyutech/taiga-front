@@ -72,6 +72,10 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
         @kanbanUserstoriesService.reset()
         @.openFilter = false
         @.selectedUss = {}
+        #渲染增量
+        @.readerItemIncrement = 20
+        #初始渲染项
+        @.initReaderItem = 50;
 
         return if @.applyStoredFilters(@params.pslug, "kanban-filters")
 
@@ -154,6 +158,13 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
         @scope.$on "kanban:us:deleted", (event, us) =>
             @.filtersReloadContent()
 
+        #订阅滚动到底的通知，进行渲染处理
+        @scope.$on "scroll:bottom", (event) =>
+            if @.queue.length <= @.readerItemIncrement
+                @.readerItemIncrement = @.queue.length
+            @.initReaderItem += @.readerItemIncrement
+            @.renderBatch();
+
         @scope.$on("kanban:us:move", @.moveUs)
         @scope.$on("kanban:show-userstories-for-status", @.loadUserStoriesForStatus)
         @scope.$on("kanban:hide-userstories-for-status", @.hideUserStoriesForStatus)
@@ -177,16 +188,16 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
         @rs.userstories.getByRef(us.getIn(['model', 'project']), us.getIn(['model', 'ref']))
         .then (editingUserStory) =>
             @rs2.attachments.list(
-                "us", us.get('id'), us.getIn(['model', 'project'])).then (attachments) =>
+                "us", us.get('id'), us.getIn(['model', 'project']))
+                .then (attachments) =>
                     @rootscope.$broadcast("genericform:edit", {
                         'objType': 'us',
                         'obj': editingUserStory,
                         'statusList': @scope.usStatusList,
                         'attachments': attachments.toJS()
                     })
-
-                us = us.set('loading-edit', false)
-                @kanbanUserstoriesService.replace(us)
+            us = us.set('loading-edit', false)
+            @kanbanUserstoriesService.replace(us)
 
     deleteUs: (id) ->
         us = @kanbanUserstoriesService.getUs(id)
@@ -257,7 +268,8 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
         @.queue = _.drop(@.queue, @.batchSize)
         @kanbanUserstoriesService.set(@.rendered)
 
-        if @.queue.length > 0
+        #渲染项限制
+        if @.queue.length > 0 && @.rendered.length <= @.initReaderItem
             @timeout(@.renderBatch)
         else
             scopeDefer @scope, =>
@@ -585,3 +597,59 @@ KanbanWipLimitDirective = ($timeout) ->
     return {link: link}
 
 module.directive("tgKanbanWipLimit", ["$timeout", KanbanWipLimitDirective])
+
+#############################################################################
+## Kanban Roll Monitor
+#############################################################################
+KanbanRollMonitor = ($timeout) ->
+    link = ($scope, $el, $attrs) ->
+
+        #节流的时间
+        time = 1000
+        #记录项
+        recordItem = {}
+
+        #节流
+        throttle = (func, wait) =>
+            timer = null
+            return  () ->
+                context = this
+                args = arguments
+                if  not timer
+                    timer = $timeout =>
+                        timer = null
+                        func.apply(context, args)
+                    , wait
+
+        #绑定滚动事件，做滚动到顶部通知要渲染
+        $el.on "scroll", throttle(() ->
+            scrollHeight = $el[0].scrollHeight
+            scrollTop = Math.ceil($el[0].scrollTop)
+            clientHeight = $el[0].clientHeight
+            if (scrollHeight - scrollTop) is clientHeight
+                #发布给订阅该事件的通知
+                $scope.$emit("scroll:bottom")
+        , time)
+
+        #订阅渲染完成后的通知，做渲染完成解绑滚动事件
+        $scope.$on "userstories:loaded", (event, us) =>
+            if not $scope.$$childTail
+                $el.off("scroll")
+                return
+            if not recordItem[$scope.$$childTail.$index]
+                recordItem[$scope.$$childTail.$index] = $scope.$$childTail.$index
+            else
+                if not recordItem['off']
+                    $el.off("scroll")
+                    recordItem = {}
+                    recordItem[$scope.$$childTail.$index] = $scope.$$childTail.$index
+                    recordItem['off'] = true
+                    return
+
+        $scope.$on "$destroy", ->
+            $el.off()
+
+    return {link: link}
+
+module.directive("tgKanbanRollMonitor", ["$timeout", KanbanRollMonitor])
+
