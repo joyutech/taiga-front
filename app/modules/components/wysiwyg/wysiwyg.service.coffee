@@ -142,6 +142,7 @@ class WysiwygService
         autolinker = new Autolinker({
             mention: 'twitter',
             hashtag: 'twitter',
+            stripPrefix: false,
             replaceFn: (match) =>
                 if  match.getType() == 'mention'
                     profileUrl = @navurls.resolve('user-profile', {
