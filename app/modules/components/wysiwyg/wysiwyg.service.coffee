@@ -143,6 +143,7 @@ class WysiwygService
             mention: 'twitter',
             hashtag: 'twitter',
             stripPrefix: false,
+            urls: { schemeMatches: true, wwwMatches: true, tldMatches: false },
             replaceFn: (match) =>
                 if  match.getType() == 'mention'
                     profileUrl = @navurls.resolve('user-profile', {
