@@ -146,6 +146,7 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
             @analytics.trackEvent("userstory", "create", "create userstory on kanban", 1)
 
         @scope.$on "usform:bulk:success", (event, uss) =>
+            @confirm.notify("success")
             @.refreshTagsColors().then () =>
                 @kanbanUserstoriesService.add(uss)
 
@@ -268,6 +269,8 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
         @.queue = _.drop(@.queue, @.batchSize)
         @kanbanUserstoriesService.set(@.rendered)
 
+        @scope.$broadcast("redraw:wip")
+
         #渲染项限制
         if @.queue.length > 0 && @.rendered.length <= @.initReaderItem
             @timeout(@.renderBatch)
@@ -311,8 +314,6 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
             @tgLoader.pageLoaded()
             @.renderUserStories(userstories)
             return userstories
-
-        promise.then( => @scope.$broadcast("redraw:wip"))
 
         return promise
 

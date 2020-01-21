@@ -367,6 +367,15 @@
     p {
         text-align: center;
     }
+    .message {
+        margin: 0 auto;
+        max-width: 300px;
+    }
+    .options {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
 }
 
 .lightbox-generic-loading {
@@ -452,6 +461,9 @@
         flex-grow: 0;
         width: 600px;
     }
+    .search {
+        margin-top: 2rem;
+    }
     .user-list-single {
         &:hover,
         &.selected {
@@ -469,10 +481,8 @@
         padding: .5rem;
         text-align: center;
     }
-    .submit-button {
-        margin-top: 1rem;
-    }
     .add-comment {
+        padding: 1rem 0;
         position: relative;
         text-align: center;
         .icon-close {
@@ -488,6 +498,9 @@
             svg {
                 @include svg-size(2rem);
             }
+        }
+        fieldset {
+            margin: 0;
         }
         textarea {
             margin-top: 1rem;
@@ -642,6 +655,7 @@
             max-width: $width - $sidebar-width;
         }
         .sidebar {
+            background: none;
             border-left: 2px solid $whitish;
             margin-left: $spacing;
             padding-left: $spacing;
@@ -775,6 +789,10 @@
         position: relative;
     }
 
+    .self-assign {
+        display: block;
+    }
+
     .pop-status {
         @include popover($pop-width, $control-height - 2px);
     }
@@ -847,12 +865,12 @@
     }
 
     .ticket-detail-settings {
-        height: 52px;
         justify-content: left;
         margin: 1rem 0 0;
         label {
             border: 0;
-            padding: 12px 13px;
+            min-height: 45px;
+            padding: .85rem .65rem;
             width: auto;
         }
         .item-block,

@@ -1,5 +1,5 @@
 .check {
-    background-color: darken($whitish, 10%);
+    background-color: $whitish;
     border-radius: 2px;
     cursor: pointer;
     height: 1.5rem;
@@ -16,7 +16,8 @@
         width: 100px;
         z-index: 999;
         + div {
-            background-color: $gray;
+            background-color: $grey-70;
+            color: $white;
             height: 25px;
             transition: all .2s linear;
             width: 50%;
@@ -30,32 +31,46 @@
         }
         ~ .check-yes {
             opacity: 0;
-            right: .5rem;
+            right: 0;
+            text-align: center;
+            width: 32px;
         }
         ~ .check-no {
-            left: .5rem;
-            opacity: .6;
+            left: 0;
+            opacity: 1;
+            text-align: center;
+            width: 33px;
+        }
+    }
+    input:disabled,
+    input:checked:disabled {
+        cursor: auto;
+        + div {
+            background-color: $gray-lighter;
+        }
+        ~ .check-text {
+            color: $whitish;
         }
     }
     input:checked {
         + div {
-            background-color: $primary-light;
+            background-color: $primary;
+            color: $white;
             margin-left: 50%;
             transition: all .2s linear;
         }
         ~ .check-yes {
-            opacity: .8;
-            right: .25rem;
+            opacity: 1;
         }
         ~ .check-no {
-            left: .25rem;
             opacity: 0;
         }
     }
-    input:disabled {
-        cursor: auto;
-        + div {
-            background-color: $gray-light;
-        }
+}
+
+.check-toggle {
+    background-color: $grey-20;
+    &.active {
+        background-color: $grey-70;
     }
 }

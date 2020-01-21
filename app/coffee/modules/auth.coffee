@@ -84,7 +84,12 @@ class AuthService extends taiga.Service
         @analytics.setUserId()
 
     _getUserTheme: ->
-        return @rootscope.user?.theme || @config.get("defaultTheme") || "taiga" # load on index.jade
+        defaultTheme = @config.get("defaultTheme") || "taiga"
+
+        if !_.includes(@config.get("themes"), @rootscope.user?.theme)
+            return defaultTheme
+
+        return @rootscope.user?.theme
 
     _setTheme: ->
         newTheme = @._getUserTheme()
@@ -279,6 +284,7 @@ module.directive("tgPublicRegisterMessage", ["$tgConfig", "$tgNavUrls", "$routeP
 LoginDirective = ($auth, $confirm, $location, $config, $routeParams, $navUrls, $events, $translate, $window, $analytics) ->
     link = ($scope, $el, $attrs) ->
         form = new checksley.Form($el.find("form.login-form"))
+        $scope.defaultLoginEnabled = $config.get("defaultLoginEnabled", true)
 
         if $routeParams['next'] and $routeParams['next'] != $navUrls.resolve("login")
             $scope.nextUrl = decodeURIComponent($routeParams['next'])

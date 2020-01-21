@@ -1,39 +1,88 @@
-.us-story-main-data {
-    margin-bottom: 1rem;
-    header {
-        align-content: center;
-        align-items: stretch;
+.detail {
+    background: $mass-white;
+    padding: 0;
+    .detail-header-container,
+    .detail-content {
+        background: $white;
+        padding: 1rem;
+    }
+    .detail-header-container {
         display: flex;
-        justify-content: center;
-        margin-bottom: .5rem;
+        margin: 0 0 .5rem;
+        position: relative;
+        @include until($tablet) {
+            display: block;
+        }
+        &.blocked {
+            background: $red-light;
+            color: $white;
+            a,
+            a:hover,
+            .detail-ref,
+            .detail-subject,
+            .section-name,
+            .created-title,
+            .created-date {
+                color: $white;
+            }
+            svg {
+                fill: $white;
+            }
+            a:not(.button):hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    .detail-ref {
+        flex-shrink: 1;
+    }
+    .detail-header {
+        flex-grow: 1;
+        @include until($tablet) {
+            padding: 0;
+        }
+    }
+
+    .action-buttons {
+        margin-top: .5rem;
     }
 }
 
 .subheader {
-    align-items: flex-start;
+    align-items: flex-end;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    @include breakpoint(laptop) {
+    margin-top: 1rem;
+    @include until($tablet) {
         flex-direction: column;
         justify-content: flex-start;
     }
     .ticket-created-by {
-        flex-basis: 250px;
-        flex-shrink: 0;
-        @include breakpoint(laptop) {
+        flex-shrink: 1;
+        @include until($tablet) {
+            align-self: flex-end;
             flex-basis: auto;
-            order: 1;
         }
     }
+    .tags-container {
+        align-items: flex-end;
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: .25rem;
+    }
     .tags-block {
+        align-items: flex-end;
         flex: 1;
-        @include breakpoint(laptop) {
-            order: 2;
-        }
+        flex-grow: 1;
         .tag {
             border-color: transparent;
             border-style: solid;
+            margin: .25rem .25rem 0;
         }
+    }
+    &.has-tags .relate-to-epic {
+        flex-basis: 100%;
     }
 }
 
@@ -60,6 +109,11 @@
     &.wysiwyg {
         overflow: visible;
     }
+
+    .read-mode .wysiwyg {
+        padding: 1rem;
+    }
+
     .no-description {
         color: $gray-light;
     }

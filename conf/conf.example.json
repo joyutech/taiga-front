@@ -9,6 +9,7 @@
     "defaultLanguage": "zh-hans",
     "themes": ["taiga"],
     "defaultTheme": "taiga",
+    "defaultLoginEnabled": true,
     "publicRegisterEnabled": false,
     "feedbackEnabled": true,
     "supportUrl": "https://tree.taiga.io/support",

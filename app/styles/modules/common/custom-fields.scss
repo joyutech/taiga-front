@@ -4,7 +4,8 @@
         @include font-type(semibold);
         align-content: space-between;
         align-items: center;
-        background: $mass-white;
+        background: $grey-05;
+        color: $grey-70;
         display: flex;
         justify-content: space-between;
         padding: .5rem 1rem;
@@ -92,7 +93,7 @@
     &.collapse-fields {
         .custom-attribute {
             flex-basis: 50%;
-            @include breakpoint(laptop) {
+            @include until($widescreen) {
                 flex-basis: 100%;
                 &:nth-child(even) {
                     padding: 0;

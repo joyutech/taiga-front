@@ -1,4 +1,6 @@
 .taskboard {
+    display: flex;
+    flex-direction: column;
     height: $main-height;
     overflow: hidden;
     position: relative;
@@ -20,10 +22,6 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
-    h1 {
-        align-items: baseline;
-        display: inline-flex;
-    }
 }
 
 .taskboard-inner {

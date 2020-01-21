@@ -19,9 +19,6 @@
             width: 100%;
         }
     }
-    .change-image {
-        display: block;
-    }
     .image-container {
         position: relative;
         margin-bottom: .5rem;
@@ -59,7 +56,7 @@
         flex: 1;
         max-width: 500px;
     }
-    @include breakpoint(tablet) {
+    @include until($desktop) {
         form {
             display: block;
         }

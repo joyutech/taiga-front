@@ -131,7 +131,6 @@ class BacklogController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.F
             @.loadProjectStats()
 
             @rootscope.$broadcast("filters:update")
-            @confirm.notify("success")
             @analytics.trackEvent("userstory", "create", "create userstory on backlog", 1)
 
         @scope.$on "sprintform:edit:success", =>
@@ -155,10 +154,13 @@ class BacklogController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.F
 
             @rootscope.$broadcast("filters:update")
 
+        @scope.$on "filters:update", () => @.generateFilters(milestone = "null")
+
         @scope.$on("sprint:us:move", @.moveUs)
         @scope.$on "sprint:us:moved", () =>
             @.loadSprints()
             @.loadProjectStats()
+            @rootscope.$broadcast("filters:update")
 
         @scope.$on("backlog:load-closed-sprints", @.loadClosedSprints)
         @scope.$on("backlog:unload-closed-sprints", @.unloadClosedSprints)

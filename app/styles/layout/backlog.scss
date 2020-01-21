@@ -25,10 +25,15 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 1rem;
-    @include breakpoint(laptop) {
+    @include until($widescreen) {
         flex-direction: column;
     }
     .menu-button {
+        @include font-type(light);
+        &:hover,
+        &:visited:hover {
+            color: $grey-90;
+        }
         &.move-to-sprint {
             display: none;
         }

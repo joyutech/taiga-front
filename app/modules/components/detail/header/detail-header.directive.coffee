@@ -17,22 +17,22 @@
 # File: components/detail/header/detail-header.directive.coffee
 ###
 
-module = angular.module('taigaUserStories')
+module = angular.module('taigaBase')
 
 DetailHeaderDirective = () ->
     @.$inject = []
 
     link = (scope, el, attrs, ctrl) ->
         ctrl._checkPermissions()
-        ctrl._checkNav()
 
     return {
         link: link,
-        controller: "StoryHeaderCtrl",
+        controller: "DetailHeaderCtrl",
         bindToController: true,
         scope: {
             item: "=",
             project: "=",
+            sectionName: "="
             requiredPerm: "@"
         },
         controllerAs: "vm",
