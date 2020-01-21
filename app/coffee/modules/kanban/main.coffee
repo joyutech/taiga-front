@@ -624,7 +624,7 @@ KanbanRollMonitor = ($timeout) ->
         #绑定滚动事件，做滚动到顶部通知要渲染
         $el.on "scroll", throttle(() ->
             scrollHeight = $el[0].scrollHeight
-            scrollTop = Math.ceil($el[0].scrollTop)
+            scrollTop = parseInt($el[0].scrollTop);
             clientHeight = $el[0].clientHeight
             if (scrollHeight - scrollTop) is clientHeight
                 #发布给订阅该事件的通知
