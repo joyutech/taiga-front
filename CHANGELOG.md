@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 5.0.7 (2020-02-06)
+
+### i18n
+
+- Update Korean translation.
+- Add Latvian translation.
+
+### Misc
+
+- Several minor bugfixes.
+
 ## 5.0.6 (2020-01-15)
 
 ### Features
