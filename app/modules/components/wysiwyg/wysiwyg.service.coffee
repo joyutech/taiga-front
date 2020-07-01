@@ -219,6 +219,16 @@ class WysiwygService
         })
 
         md.use(window.markdownitLazyHeaders)
+        defaultRender = md.renderer.rules.link_open || (tokens, idx, options, env, self) -> 
+            return self.renderToken(tokens, idx, options)
+        md.renderer.rules.link_open = (tokens, idx, options, env, self) ->
+            aIndex = tokens[idx].attrIndex('target')
+            if aIndex < 0
+                tokens[idx].attrPush(['target', '_blank'])
+            else
+                tokens[idx].attrs[aIndex][1] = '_blank'
+            return defaultRender(tokens, idx, options, env, self)
+
         result = md.render(text)
         result = @.searchWikiLinks(result)
         result = @.autoLinkHTML(result)
