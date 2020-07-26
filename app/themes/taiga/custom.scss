@@ -1,0 +1,82 @@
+.wiki {
+    background: #CCE8CF;
+}
+
+.wysiwyg {
+    background: #CCE8CF;
+
+    p {
+        margin-bottom: 0.2rem;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: bold;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        padding-bottom: .5rem;
+    }
+
+    h1, h2 {
+        padding-bottom: .3rem;
+        border-bottom: 1px solid #6a737d;
+    }
+
+    h1 {
+        font-size: 2.2em;
+    }
+
+    h2 {
+        font-size: 1.7em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    h4 {
+        font-size: 1.2em;
+    }
+
+    h5 {
+        font-size: 1em;
+    }
+
+    h6 {
+        font-size: .85em;
+    }
+
+    hr {
+        border: 1.5px solid #6a737d;
+    }
+
+    code {
+        background: #6f6f6f;
+        margin: 0rem .2rem;
+    }
+
+    pre {
+        background: #2d2d2d;
+        margin: 0em;
+
+        code {
+            background: #2d2d2d;
+            padding: 0rem;
+            margin: 0rem;
+        }
+    }
+
+    pre:not([class*="language-"]) {
+        background: #2d2d2d;
+        margin: 0em;
+    }
+
+    blockquote {
+        color: #6a737d;
+        border-left: .25em solid #6a737d;
+    }
+
+    .attachments-empty {
+        border: 3px dashed #25a28b;
+    }
+}

@@ -76,7 +76,7 @@ paths.css_vendor = [
     paths.app + "styles/vendor/*.css",
     paths.modules + "medium-editor/dist/css/medium-editor.css",
     paths.modules + "medium-editor/dist/css/themes/default.css",
-    paths.modules + "prismjs/themes/prism-okaidia.css"
+    paths.modules + "prismjs/themes/prism-tomorrow.css"
 ];
 paths.locales = paths.app + "locales/**/*.json";
 paths.modulesLocales = paths.app + "modules/**/locales/*.json";
@@ -344,7 +344,7 @@ gulp.task("app-css", function() {
 
 gulp.task("vendor-css", function() {
     var isPrism = function(file) {
-        return file.path.indexOf('prism-okaidia') !== -1;
+        return file.path.indexOf('prism-tomorrow') !== -1;
     };
 
     return gulp.src(paths.css_vendor)
