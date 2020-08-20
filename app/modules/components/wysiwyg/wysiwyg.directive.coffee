@@ -518,6 +518,7 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
 
                     if e.target.href
                         if r.test(e.target.getAttribute('href')) || e.target.getAttribute('target') == '_blank'
+                            e.preventDefault()
                             e.stopPropagation()
                             window.open(e.target.href)
                         else
