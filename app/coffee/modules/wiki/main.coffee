@@ -80,6 +80,7 @@ class WikiDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
 
         @appMetaService.setAll(title, description)
 
+    # 加载项目
     loadProject: ->
         project = @projectService.project.toJS()
 
@@ -91,6 +92,7 @@ class WikiDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
         @scope.$emit('project:loaded', project)
         return project
 
+    # 加载维基
     loadWiki: =>
         promise = @rs.wiki.getBySlug(@scope.projectId, @params.slug)
         promise.then (wiki) =>
@@ -139,9 +141,11 @@ class WikiDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
           (@scope.project.my_permissions.indexOf("view_wiki_links") != -1 && @scope.wikiLinks.length)
             @scope.linksVisible = true
 
+    # 修改
     edit: ->
         @rootscope.$broadcast("wiki-edit")
 
+    # 删除
     delete: ->
         title = @translate.instant("WIKI.DELETE_LIGHTBOX_TITLE")
         message = @scope.wikiSlug
@@ -248,16 +252,19 @@ $qqueue, $repo, $analytics, activityService) ->
             return attachmentsFullService.addAttachment($scope.project.id, $scope.item.id, 'wiki_page', file).then (result) ->
                 cb(result.getIn(['file', 'name']), result.getIn(['file', 'url']), 'wiki_page', result.getIn(['file', 'id']))
 
+        # 文件上传
         $scope.uploadFiles = (files, cb) ->
             for file in files
                 uploadFile(file, cb)
 
+        # 监听维基内容变化
         $scope.$watch $attrs.model, (value) ->
             return if not value
             $scope.item = value
             $scope.version = value.version
             $scope.storageKey = $scope.project.id + "-" + value.id + "-wiki"
 
+        # 监听整个维基项目的变化
         $scope.$watch 'project', (project) ->
             return if !project
 
@@ -292,10 +299,11 @@ $qqueue, $repo, $analytics, activityService) ->
         """
     }
 
+# 自定义指令（tgWikiWysiwyg）
 module.directive("tgWikiWysiwyg", [
     "$tgQueueModelTransformation",
     "$rootScope",
     "$tgConfirm",
-    "tgAttachmentsFullService",
+    "tgAttachmentsFullService",  # 不清楚什么服务，看attachments-full.service.coffee文件
     "$tgQqueue", "$tgRepo", "$tgAnalytics", "tgActivityService"
     WikiWysiwyg])

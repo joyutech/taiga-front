@@ -213,6 +213,7 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
             $scope.editMode = editMode
             editorMedium[0].setAttribute('contenteditable', editMode)
 
+        # wiki设置
         setHtmlMedium = (markdown) ->
             html = wysiwygService.getHTML(markdown)
             editorMedium.html(html)
@@ -550,7 +551,8 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
                     wysiwygCodeHightlighterService.addHightlighter(mediumInstance.elements[0])
                     refreshCodeBlocks(mediumInstance)
 
-        $(editorMedium[0]).on 'mousedown', (e) ->
+        # 修改用户故事详细说明（点击编辑改为双击编辑）
+        $(editorMedium[0]).on 'dblclick', (e) ->
             if e.target.href
                 e.preventDefault()
                 e.stopPropagation()
@@ -606,6 +608,7 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
 
                 unwatch()
 
+        # 监听维基编辑器
         $scope.$on "wiki-edit", () ->
             if isWikiEditor
                 $scope.$applyAsync () ->
@@ -634,15 +637,15 @@ Medium = ($translate, $confirm, $storage, wysiwygService, animationFrame, tgLoad
     }
 
 angular.module("taigaComponents").directive("tgWysiwyg", [
-    "$translate",
-    "$tgConfirm",
-    "$tgStorage",
-    "tgWysiwygService",
-    "animationFrame",
-    "tgLoader",
-    "tgWysiwygCodeHightlighterService",
-    "tgWysiwygMentionService",
-    "$tgAnalytics",
-    "$location",
+    "$translate",  # angular-translate库
+    "$tgConfirm",  # $tgConfirm服务，看confirm.coffee文件
+    "$tgStorage",  # 本地localStorage服务，看storage.coffee文件
+    "tgWysiwygService",  # tgWysiwygService服务，看wysiwyg.service.coffee文件
+    "animationFrame",  #  浏览器下次重绘动画相关指令，看common.coffee文件
+    "tgLoader",  # 页面加载指令，看loader.coffee文件
+    "tgWysiwygCodeHightlighterService", # 语言服务，看wysiwyg-code-hightlighter.service.coffee文件
+    "tgWysiwygMentionService",  # 搜索服务，看wysiwyg-mention.service.coffee文件
+    "$tgAnalytics",  # AnalyticsService服务，看analytics.coffee文件
+    "$location",  # ng API
     Medium
 ])

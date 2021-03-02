@@ -99,6 +99,10 @@ Resource = (urlsService, http, config, $rootScope, $q, storage) ->
                     attachment = {}
 
                 if status >= 200 and status < 400
+                    # 修复上传的图片名含有特殊字符在维基编辑器里无法显示问题
+                    if taiga.isImage(attachment.name)
+                        cuttingUrlArr = attachment.url.split('/');
+                        attachment.name = cuttingUrlArr[cuttingUrlArr.length - 1];
                     attachment = Immutable.fromJS(attachment)
                     defered.resolve(attachment)
                 else

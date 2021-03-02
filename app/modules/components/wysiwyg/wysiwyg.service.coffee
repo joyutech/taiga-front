@@ -215,7 +215,7 @@ class WysiwygService
         text = @.pipeLinks(text)
 
         md = window.markdownit({
-            breaks: true
+            breaks: true  # 转换段落里的 '\n' 到 <br>。
         })
 
         md.use(window.markdownitLazyHeaders)
